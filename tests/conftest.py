@@ -3,10 +3,10 @@ import json
 import os
 
 import pytest
-from selenium.webdriver import Chrome, Firefox, ChromeOptions, Safari
+from selenium.webdriver import Chrome, Firefox, ChromeOptions, Safari, Opera
 
 CONFIG_FILE = 'tests/config.json'
-SUPPORTED_BROWSERS = ['chrome', 'firefox', 'safari']
+SUPPORTED_BROWSERS = ['chrome', 'firefox', 'safari', 'opera']
 DEFAULT_WAIT = 20
 
 
@@ -45,11 +45,13 @@ def chrome_options(config):
 def browser(config_browser, config_wait_time, chrome_options):
     __clean_up()
     if config_browser == 'chrome':
-        driver = Chrome(options=chrome_options, service_args=['--verbose', '--log-path=logs/chromedriver.log'])
+        driver = Chrome(options=chrome_options, service_args=['--verbose', '--log-path=logs/chrome.log'])
     elif config_browser == 'firefox':
         driver = Firefox(service_log_path='logs/firefox.log')
     elif config_browser == 'safari':
         driver = Safari(quiet=True)
+    elif config_browser == 'opera':
+        driver = Opera(service_log_path='logs/opera.log')
     else:
         raise Exception(f'"{config["browser"]}" is not a supported browser')
     driver.implicitly_wait(config_wait_time)
@@ -59,5 +61,6 @@ def browser(config_browser, config_wait_time, chrome_options):
 
 def __clean_up():
     logs = glob.glob("logs/*")
-    for l in logs:
-        os.remove(l)
+    if len(logs) > 0:
+        for l in logs:
+            os.remove(l)

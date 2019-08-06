@@ -1,5 +1,5 @@
 {
-  "browser": "chrome",
+  "browser": "opera",
   "wait_time": 30,
   "headless": false
 }
